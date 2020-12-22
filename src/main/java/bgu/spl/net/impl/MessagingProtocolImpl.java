@@ -8,19 +8,44 @@ import java.util.HashMap;
 
 public class MessagingProtocolImpl implements MessagingProtocol<Message> {
     private boolean shouldTerminate=false;
-    private HashMap<String, Short> opMap;
+    String username=null;
     private HashMap<Short, Function> functionMap;
     private Database database=Database.getInstance();
     public MessagingProtocolImpl(){
         short c1=1,c2=2,c3=3,c4=4,c5=5,c6=6,c7=7,c8=8,c9=9,c10=10,c11=11,c12=12,c13=13;
         functionMap.put(c1,(parameters)->{
-                if (registerCheck(parameters[0])){
-                    return new Message("ERROR "+c1);
+                if (database.adminRegister(parameters[0],parameters[1]))
+                    return new Message //ack message
+                else
+                    return new Message //error message
+        });
+        functionMap.put(c2,(parameters)->{
+                if (database.studentRegister(parameters[0],parameters[1]))
+                    return new Message//ack message
+                else
+                    return new Message//error message
+        });
+        functionMap.put(c3,(parameters)->{
+            if (database.isLogged(parameters[0])|!database.isRegistered(parameters[0]))
+                return new Message//error message
+            else{
+                if (database.login(parameters[0], parameters[1])){
+                    username=parameters[0];
+                    return new Message//ack message
                 }
-                database.adminRegister(parameters[0],parameters[1]);
-
+                return new Message//error message
+            }
+        });
+        functionMap.put(c4,(parameters)->{
+            if (!database.logOut(username))
+                return new Message//error message
+            shouldTerminate=true;
+            return new Message//ack message
+        });
+        functionMap.put(c5,(parameters)->{
 
         })
+
 
 
     }
@@ -37,10 +62,6 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         return shouldTerminate;
     }
 
-    private boolean registerCheck(String username){
-        return database.isRegistered(username);
-
-    }
 
     private String getError(){
 
