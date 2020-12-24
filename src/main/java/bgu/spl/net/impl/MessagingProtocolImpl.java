@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class MessagingProtocolImpl implements MessagingProtocol<Message> {
     private boolean shouldTerminate=false;
-    User user;
+    User user=null;
     private HashMap<Short, Function> functionMap;
     private Database database=Database.getInstance();
     public MessagingProtocolImpl(){
@@ -45,7 +45,24 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
             return new Message//ack message
         });
         functionMap.put(c5,(parameters)->{
-
+            if(database.registerCourse(user, Integer.parseInt(parameters[0])){
+                return new Message // ack message
+            }
+            return new Message // error message (5)
+        });
+        functionMap.put(c6, (parameters)->{
+            int[] array = database.getKdamCourses(Integer.parseInt(parameters[0]);
+            if(array==null)
+                return new Message // error msg
+            String kdamCourses = "[";
+            if(array.length==0){
+                return new Message("") // ack msg
+            }
+            for(int i=0;i<array.length-1;i++){
+                kdamCourses+= String.valueOf(array[i])+",";
+            }
+            kdamCourses+= String.valueOf(array[array.length-1])+"]";
+            return new Message(kdamCourses) // ack msg
         });
 
 

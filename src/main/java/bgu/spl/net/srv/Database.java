@@ -105,8 +105,27 @@ public class Database {
 		user.unlog();
 		return true;
 	}
-
-
+	public boolean registerCourse(User user, int numCourse){
+		if(user==null) {return false;}
+		if(!user.getLogged() | user.isAdmin() | !numCourseMap.containsKey(numCourse)) {return false;}
+		Course course = numCourseMap.get(numCourse);
+		if(course.getNumOfMaxStudents() <= registerMap.get(course).size()){ //check if there is a seat in the course
+			return false;}
+		int [] kdamCourses = course.getKdamCoursesList();
+		List<Integer> listOfCourses = user.getCoursesRegistered();
+		for(int i=0; i<kdamCourses.length; i++){
+			if(!listOfCourses.contains(kdamCourses[i])) {return false;}
+		}
+		listOfCourses.add(numCourse);
+		registerMap.get(course).add(user);
+		return true;
+	}
+	public int[] getKdamCourses(int courseNum){
+		if(numCourseMap.containsKey(courseNum)){
+			return numCourseMap.get(courseNum).getKdamCoursesList();
+		}
+		return null;
+	}
 
 
 }

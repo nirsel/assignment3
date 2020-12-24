@@ -36,4 +36,6 @@ public abstract class User {
     public void unlog(){
         logged=false;
     }
+
+    public abstract List<Integer> getCoursesRegistered();
 }

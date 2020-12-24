@@ -1,5 +1,7 @@
 package bgu.spl.net.srv;
 
+import java.util.List;
+
 public class Admin extends User {
 
 
@@ -10,5 +12,10 @@ public class Admin extends User {
     @Override
     public boolean isAdmin() {
         return true;
+    }
+
+    @Override
+    public List<Integer> getCoursesRegistered() {
+        return null;
     }
 }
