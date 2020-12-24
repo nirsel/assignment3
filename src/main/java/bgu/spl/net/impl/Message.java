@@ -15,6 +15,11 @@ public class Message {
         byte[] code=splitMsg[0].getBytes();
     }
 
+    public Message(short opCode, String[] parameters){
+        this.opCode=opCode;
+        this.parameters=parameters;
+    }
+
     public short bytesToShort(byte[] byteArr)
     {
         short result = (short)((byteArr[0] & 0xff) << 8);

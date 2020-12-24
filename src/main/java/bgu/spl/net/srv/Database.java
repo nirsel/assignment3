@@ -44,14 +44,14 @@ public class Database {
 	public boolean adminRegister(String username, String password){
 		if (isRegistered(username))
 			return false;
-		userMap.put(username,new User(username,password,"Admin"));
+		userMap.put(username,new Admin(username,password));
 		return true;
 	}
 
 	public boolean studentRegister(String username, String password){
 		if (isRegistered(username))
 			return false;
-		userMap.put(username,new User(username,password,"Student"));
+		userMap.put(username,new Student(username,password));
 		return true;
 	}
 
