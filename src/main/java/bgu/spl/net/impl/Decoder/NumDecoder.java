@@ -17,6 +17,7 @@ public class NumDecoder implements Decoder {
             para[0]=String.valueOf(parameter);
             return new Message(code, para);
         }
+        return null;
     }
 
     public short bytesToShort(byte[] byteArr)
