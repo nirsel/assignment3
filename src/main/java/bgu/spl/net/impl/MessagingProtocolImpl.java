@@ -3,12 +3,13 @@ package bgu.spl.net.impl;
 import bgu.spl.net.api.Function;
 import bgu.spl.net.api.MessagingProtocol;
 import bgu.spl.net.srv.Database;
+import bgu.spl.net.srv.User;
 
 import java.util.HashMap;
 
 public class MessagingProtocolImpl implements MessagingProtocol<Message> {
     private boolean shouldTerminate=false;
-    String username=null;
+    User user;
     private HashMap<Short, Function> functionMap;
     private Database database=Database.getInstance();
     public MessagingProtocolImpl(){
@@ -26,25 +27,26 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
                     return new Message//error message
         });
         functionMap.put(c3,(parameters)->{
-            if (database.isLogged(parameters[0])|!database.isRegistered(parameters[0]))
+            if (!database.isRegistered(parameters[0]))
                 return new Message//error message
             else{
-                if (database.login(parameters[0], parameters[1])){
-                    username=parameters[0];
+                User user=database.login(parameters[0], parameters[1]);
+                if (user!=null){
+                    this.user=user;
                     return new Message//ack message
                 }
                 return new Message//error message
             }
         });
         functionMap.put(c4,(parameters)->{
-            if (!database.logOut(username))
+            if (!database.logOut(user))
                 return new Message//error message
             shouldTerminate=true;
             return new Message//ack message
         });
         functionMap.put(c5,(parameters)->{
 
-        })
+        });
 
 
 

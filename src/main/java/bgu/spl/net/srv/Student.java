@@ -1,6 +1,7 @@
 package bgu.spl.net.srv;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Student extends User{
@@ -8,7 +9,7 @@ public class Student extends User{
 
     public Student(String username, String password) {
         super(username, password);
-        coursesRegistered=new ArrayList<>();
+        coursesRegistered=new LinkedList<>();
     }
 
     public void registerToCourse(Integer numCourse){
