@@ -10,6 +10,7 @@ public class NumDecoder implements Decoder {
     public Message decode(byte nextByte, byte[] bytes, short code) {
         if (numOfBytes<=1){
             byteArr[numOfBytes]=nextByte;
+            numOfBytes++;
         }
         else{
             parameter=bytesToShort(byteArr);
