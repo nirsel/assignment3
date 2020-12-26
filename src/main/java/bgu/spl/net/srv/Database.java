@@ -53,7 +53,13 @@ public class Database {
 				String[] lineArray=line.split("|");
 				int courseNum=Integer.parseInt(lineArray[0]);
 				String courseName=lineArray[1];
-				int[] array= Stream.of(lineArray[2].substring(1,lineArray[2].length()-1).split(",")).mapToInt(Integer::parseInt).toArray();
+				int[] array;
+				if (!lineArray[2].equals("[]")) {
+					 array = Stream.of(lineArray[2].substring(1, lineArray[2].length() - 1).split(",")).mapToInt(Integer::parseInt).toArray();
+				}
+				else{
+					 array=new int[0];
+				}
 				int numOfMaxStudents=Integer.parseInt(lineArray[3]);
 				Course course=new Course(courseNum,courseName,array,numOfMaxStudents);
 				registerMap.put(course,new LinkedList<>());
@@ -127,5 +133,35 @@ public class Database {
 		return null;
 	}
 
+	public Course getCourse(int numCourse){
+		if (!numCourseMap.containsKey(numCourse))
+			return null;
+		return numCourseMap.get(numCourse);
+	}
+
+	public int numOfStudentesRegistered(int courseNum){
+		if (!numCourseMap.containsKey(courseNum))
+			return -1;
+		return registerMap.get(numCourseMap.get(courseNum)).size();
+	}
+
+	public List<String> studentList(int courseNum){
+		if (!numCourseMap.containsKey(courseNum))
+			return null;
+		List<User> userList=registerMap.get(numCourseMap.get(courseNum));
+		List<String> studentList=new LinkedList<String>();
+		for (User user:userList){
+			studentList.add(user.getUsername());
+		}
+		java.util.Collections.sort(studentList);
+		return studentList;
+
+	}
+
+	public boolean registeredToCourse(User user, int numCourse){
+		if (!numCourseMap.containsKey(numCourse)|user.isAdmin())
+			return false;
+		return registerMap.get(numCourseMap.get(numCourse)).contains(user);
+	}
 
 }
