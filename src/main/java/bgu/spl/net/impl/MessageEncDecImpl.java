@@ -40,11 +40,13 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
         else if (len==2){
             currentCode=bytesToShort(bytes);
             decoder=decodeMap.get(currentCode);
+            len++;
         }
         else{
             Message message = decoder.decode(nextByte, bytes,currentCode);
             if (message!=null) {
                 currentCode = 0;
+                len=0;
             }
             return message;
         }
