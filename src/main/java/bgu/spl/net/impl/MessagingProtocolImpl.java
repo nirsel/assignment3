@@ -55,7 +55,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
             return getAck(para);//ack message
         });
         functionMap.put(c5,(parameters)->{
-            if(database.registerCourse(user, Integer.parseInt(parameters[0])){
+            if(database.registerCourse(user, Integer.parseInt(parameters[0]))){
                 String[] para=new String[1];
                 para[0]=String.valueOf(c5);
                 return getAck(para); // ack message
@@ -63,7 +63,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
             return getError(c5); // error message (5)
         });
         functionMap.put(c6, (parameters)->{
-            int[] array = database.getKdamCourses(Integer.parseInt(parameters[0]);
+            int[] array = database.getKdamCourses(Integer.parseInt(parameters[0]));
             if(array==null)
                 return getError(c6); // error msg
             String kdamCourses = "[";
