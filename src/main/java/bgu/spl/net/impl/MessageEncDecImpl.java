@@ -3,6 +3,7 @@ package bgu.spl.net.impl;
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.impl.Decoder.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -18,6 +19,7 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
     private TwoStringDecoder twoStringDec=new TwoStringDecoder();
 
     public MessageEncDecImpl() {
+        decoder=null;
         decodeMap=new HashMap<>();
         decodeMap.put((short) 1,twoStringDec);
         decodeMap.put((short) 2,twoStringDec);
@@ -63,7 +65,39 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
 
     @Override
     public byte[] encode(Message message) {
-        return new byte[0];
+        if (message.getOpCode()==13){
+            byte[] bytes=new byte[4];
+            byte[] codeByte=shortToBytes(message.getOpCode());
+            short code=Short.parseShort(message.getParameters()[0]);
+            byte[] paraByte=shortToBytes(code);
+            bytes[0]=codeByte[0];
+            bytes[1]=codeByte[1];
+            bytes[2]=paraByte[0];
+            bytes[3]=paraByte[1];
+            return bytes;
+        }
+        byte[] bytes=new byte[4];
+        byte[] codeByte=shortToBytes(message.getOpCode());
+        short code=Short.parseShort(message.getParameters()[0]);
+        byte[] paraByte=shortToBytes(code);
+        bytes[0]=codeByte[0];
+        bytes[1]=codeByte[1];
+        bytes[2]=paraByte[0];
+        bytes[3]=paraByte[1];
+        String[] para=message.getParameters();
+        String list="";
+        for (int i=0;i<para.length;i++){
+            list=list+para[i]+"\0";
+        }
+        byte[] array=list.getBytes();
+        byte[] combined=new byte[4+array.length];
+        for (int i=0;i<combined.length;i++){
+            if (i<4)
+                combined[i]=bytes[i];
+            else
+                combined[i]=array[i-4];
+        }
+        return combined;
     }
 
     public short bytesToShort(byte[] byteArr)
@@ -72,6 +106,14 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
         result += (short)(byteArr[1] & 0xff);
         len++;
         return result;
+    }
+
+    public byte[] shortToBytes(short num)
+    {
+        byte[] bytesArr = new byte[2];
+        bytesArr[0] = (byte)((num >> 8) & 0xFF);
+        bytesArr[1] = (byte)(num & 0xFF);
+        return bytesArr;
     }
 }
 

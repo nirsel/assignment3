@@ -38,4 +38,6 @@ public abstract class User {
     }
 
     public abstract List<Integer> getCoursesRegistered();
+
+    public abstract void removeFromCourse(int numCourse);
 }

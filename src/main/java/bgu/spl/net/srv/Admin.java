@@ -18,4 +18,8 @@ public class Admin extends User {
     public List<Integer> getCoursesRegistered() {
         return null;
     }
+
+    @Override
+    public void removeFromCourse(int numCourse) {
+    }
 }

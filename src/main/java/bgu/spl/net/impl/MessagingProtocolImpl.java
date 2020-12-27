@@ -6,7 +6,9 @@ import bgu.spl.net.srv.Course;
 import bgu.spl.net.srv.Database;
 import bgu.spl.net.srv.User;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MessagingProtocolImpl implements MessagingProtocol<Message> {
@@ -15,6 +17,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
     private HashMap<Short, Function> functionMap;
     private Database database=Database.getInstance();
     public MessagingProtocolImpl(){
+        functionMap=new HashMap<>();
         short c1=1,c2=2,c3=3,c4=4,c5=5,c6=6,c7=7,c8=8,c9=9,c10=10,c11=11,c12=12,c13=13;
         functionMap.put(c1,(parameters)->{
                 String[] para=new String[1];
@@ -105,7 +108,30 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
             return getAck(para);
         });
 
-        //todo: 8
+        functionMap.put(c8,(parameters)->{
+            if (!user.isAdmin()|database.isRegistered(parameters[0]))
+                return getError(c8);
+            List<Integer> numCourseList=user.getCoursesRegistered();
+            List<Course> courseList=new LinkedList<Course>();
+            for (Integer num:numCourseList){
+                courseList.add(database.getCourse(num));
+            }
+            courseList.sort(Comparator.comparingInt(a->a.getSerialNum()));
+            String[] para=new String[2];
+            para[0]=String.valueOf(c8);
+            String list="[";
+            if (courseList.size()>0) {
+                for (Course course : courseList) {
+                    list = list + course.getCourseNum() + ",";
+                }
+                list=list.substring(0,list.length()-1);
+                list=list+"]";
+                para[1]=list;
+            }
+            else
+                para[1]="[]";
+            return getAck(para);
+        });
 
         functionMap.put(c9,(parameters)->{
             int courseNum=Integer.parseInt(parameters[0]);
@@ -116,6 +142,41 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
                 para[1]="REGISTERED";
             else
                 para[1]="NOT REGISTERED";
+            return getAck(para);
+        });
+
+        functionMap.put(c10,(parameters)->{ //todo:check if need to return error if wasn't registered from the beginning
+            int courseNum=Integer.parseInt(parameters[0]);
+            boolean ans = database.unregisterFromCourse(user,courseNum);
+            if (!ans)
+                return getError(c10);
+            String[] para=new String[1];
+            para[0]=String.valueOf(c10);
+            return getAck(para);
+        });
+
+        functionMap.put(c11,(parameters)->{
+            if (user.isAdmin())
+                return getError(c11);
+            List<Integer> numCourseList=user.getCoursesRegistered();
+            List<Course> courseList=new LinkedList<Course>();
+            for (Integer num:numCourseList){
+                courseList.add(database.getCourse(num));
+            }
+            courseList.sort(Comparator.comparingInt(a->a.getSerialNum()));
+            String[] para=new String[2];
+            para[0]=String.valueOf(c11);
+            String list="[";
+            if (courseList.size()>0) {
+                for (Course course : courseList) {
+                    list = list + course.getCourseNum() + ",";
+                }
+                list=list.substring(0,list.length()-1);
+                list=list+"]";
+                para[1]=list;
+            }
+            else
+                para[1]="[]";
             return getAck(para);
         });
 

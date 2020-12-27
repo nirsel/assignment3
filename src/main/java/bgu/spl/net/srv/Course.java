@@ -8,12 +8,13 @@ public class Course {
     private final String courseName;
     private final int[] kdamCoursesList;
     private final int numOfMaxStudents;
-
-    public Course(int courseNum, String courseName, int[] kdamCoursesList, int numOfMaxStudents){
+    private final int serialNum;
+    public Course(int courseNum, String courseName, int[] kdamCoursesList, int numOfMaxStudents, int serialNum){
         this.courseName=courseName;
         this.courseNum=courseNum;
         this.kdamCoursesList=kdamCoursesList;
         this.numOfMaxStudents=numOfMaxStudents;
+        this.serialNum=serialNum;
     }
 
     public int getCourseNum() {
@@ -31,4 +32,6 @@ public class Course {
     public int getNumOfMaxStudents() {
         return numOfMaxStudents;
     }
+
+    public int getSerialNum(){return serialNum;}
 }

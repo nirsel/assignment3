@@ -22,6 +22,11 @@ public class Student extends User{
     }
 
     @Override
+    public void removeFromCourse(int numCourse) {
+        coursesRegistered.remove(numCourse);
+    }
+
+    @Override
     public boolean isAdmin() {
         return false;
     }

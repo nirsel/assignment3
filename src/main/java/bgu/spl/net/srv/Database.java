@@ -49,6 +49,7 @@ public class Database {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(coursesFilePath));
 			String line;
+			int counter=1;
 			while ((line=br.readLine())!=null){
 				String[] lineArray=line.split("|");
 				int courseNum=Integer.parseInt(lineArray[0]);
@@ -61,9 +62,10 @@ public class Database {
 					 array=new int[0];
 				}
 				int numOfMaxStudents=Integer.parseInt(lineArray[3]);
-				Course course=new Course(courseNum,courseName,array,numOfMaxStudents);
+				Course course=new Course(courseNum,courseName,array,numOfMaxStudents, counter);
 				registerMap.put(course,new LinkedList<>());
 				numCourseMap.put(courseNum,course);
+				counter++;
 			}
 			return true;
 		}
@@ -162,6 +164,14 @@ public class Database {
 		if (!numCourseMap.containsKey(numCourse)|user.isAdmin())
 			return false;
 		return registerMap.get(numCourseMap.get(numCourse)).contains(user);
+	}
+
+	public boolean unregisterFromCourse(User user,int numCourse){
+		if (!registeredToCourse(user,numCourse))
+			return false;
+		user.removeFromCourse(numCourse);
+		registerMap.get(numCourseMap.get(numCourse)).remove(user);
+		return true;
 	}
 
 }
