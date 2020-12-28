@@ -51,7 +51,7 @@ public class Database {
 			String line;
 			int counter=1;
 			while ((line=br.readLine())!=null){
-				String[] lineArray=line.split("|");
+				String[] lineArray=line.split("\\|");
 				int courseNum=Integer.parseInt(lineArray[0]);
 				String courseName=lineArray[1];
 				int[] array;
