@@ -51,12 +51,12 @@ public class Database {
 			String line;
 			int counter=1;
 			while ((line=br.readLine())!=null){
-				String[] lineArray=line.split("|");
+				String[] lineArray=line.split("\\|");
 				int courseNum=Integer.parseInt(lineArray[0]);
 				String courseName=lineArray[1];
 				int[] array;
 				if (!lineArray[2].equals("[]")) {
-					 array = Stream.of(lineArray[2].substring(1, lineArray[2].length() - 1).split(",")).mapToInt(Integer::parseInt).toArray();
+					array = Stream.of(lineArray[2].substring(1, lineArray[2].length() - 1).split(",")).mapToInt(Integer::parseInt).toArray();
 				}
 				else{
 					 array=new int[0];
@@ -173,5 +173,12 @@ public class Database {
 		registerMap.get(numCourseMap.get(numCourse)).remove(user);
 		return true;
 	}
+
+	public static void main(String [] args){
+		Database d = Database.getInstance();
+		boolean ans= d.initialize("src/main/java/bgu/spl/net/srv/Courses.txt");
+
+	}
+
 
 }

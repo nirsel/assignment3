@@ -64,6 +64,7 @@ public class Message {
             case "ERROR":
                 opCode=13;
         }
+        return opCode;
     }
 
 }
