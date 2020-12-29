@@ -13,7 +13,6 @@ public class ReactorMain {
     public static void main(String[] args){
         try(Reactor<Message> server=new Reactor<Message>(Integer.parseInt(args[1]),Integer.parseInt(args[1]),()-> new MessagingProtocolImpl(), ()-> new MessageEncDecImpl());)
         {
-            Database database=Database.getInstance();
             server.serve();
         }
         catch (IOException e){e.printStackTrace();}

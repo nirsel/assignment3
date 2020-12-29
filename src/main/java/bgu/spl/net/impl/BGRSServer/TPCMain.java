@@ -14,7 +14,6 @@ public class TPCMain {
     public static void main(String[] args){
         try(TPCServer<Message> server=new TPCServer<Message>(Integer.parseInt(args[0]),()-> new MessagingProtocolImpl(), ()-> new MessageEncDecImpl());)
         {
-            Database database=Database.getInstance();
             server.serve();
         }
         catch (IOException e){e.printStackTrace();}
