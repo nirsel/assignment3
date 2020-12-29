@@ -32,6 +32,7 @@ public class Database {
 		registerMap=new ConcurrentHashMap<>();
 		userMap=new ConcurrentHashMap<>();
 		numCourseMap=new HashMap<>();
+		initialize("./Courses.txt");
 	}
 
 	/**
