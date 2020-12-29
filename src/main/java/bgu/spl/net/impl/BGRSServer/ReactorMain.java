@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class ReactorMain {
     public static void main(String[] args){
-        try(Reactor<Message> server=new Reactor<Message>(Integer.parseInt(args[1]),Integer.parseInt(args[1]),()-> new MessagingProtocolImpl(), ()-> new MessageEncDecImpl());)
+        try(Reactor<Message> server=new Reactor<Message>(Integer.parseInt(args[1]),Integer.parseInt(args[0]),()-> new MessagingProtocolImpl(), ()-> new MessageEncDecImpl());)
         {
             server.serve();
         }
