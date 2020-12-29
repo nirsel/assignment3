@@ -88,9 +88,9 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
         String[] para=message.getParameters();
         String list="";
         for (int i=0;i<para.length;i++){
-            list=list+para[i]+'\0';
+            list=list+para[i]+' ';
         }
-        list=list.substring(0,list.length()-1)+'\n';
+        list=list.substring(0,list.length()-1)+'\0';
         byte[] array=list.getBytes();
         byte[] combined=new byte[4+array.length];
         for (int i=0;i<combined.length;i++){
