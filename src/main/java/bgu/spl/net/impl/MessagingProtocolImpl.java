@@ -86,7 +86,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         functionMap.put(c7, (parameters)->{
             int courseNum=Integer.parseInt(parameters[0]);
             int[] kdam=database.getKdamCourses(courseNum);
-            if (!user.isAdmin()|kdam==null)
+            if (user==null||!user.isAdmin()|kdam==null)
                 return getError(c7);
             String[] para=new String[4];
             para[0]=String.valueOf(c7);
@@ -109,7 +109,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         });
 
         functionMap.put(c8,(parameters)->{
-            if (!user.isAdmin()|database.isRegistered(parameters[0]))
+            if (user==null||!user.isAdmin()|database.isRegistered(parameters[0]))
                 return getError(c8);
             List<Integer> numCourseList=user.getCoursesRegistered();
             List<Course> courseList=new LinkedList<Course>();
@@ -134,6 +134,8 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         });
 
         functionMap.put(c9,(parameters)->{
+            if (user==null||user.isAdmin())
+                return getError(c9);
             int courseNum=Integer.parseInt(parameters[0]);
             boolean ans = database.registeredToCourse(user,courseNum);
             String[] para=new String[2];
@@ -146,7 +148,11 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         });
 
         functionMap.put(c10,(parameters)->{ //todo:check if need to return error if wasn't registered from the beginning
+            if (user==null||user.isAdmin())
+                return getError(c10);
             int courseNum=Integer.parseInt(parameters[0]);
+            if (database.registeredToCourse(user,courseNum))
+                return getError(c10);
             boolean ans = database.unregisterFromCourse(user,courseNum);
             if (!ans)
                 return getError(c10);
@@ -156,7 +162,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         });
 
         functionMap.put(c11,(parameters)->{
-            if (user.isAdmin())
+            if (user==null||user.isAdmin())
                 return getError(c11);
             List<Integer> numCourseList=user.getCoursesRegistered();
             List<Course> courseList=new LinkedList<Course>();

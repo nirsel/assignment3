@@ -109,7 +109,7 @@ public class Database {
 		return null;
 	}
 	public boolean logOut(User user){
-		if (!user.getLogged())
+		if (user==null||!user.getLogged())
 			return false;
 		user.unlog();
 		return true;
