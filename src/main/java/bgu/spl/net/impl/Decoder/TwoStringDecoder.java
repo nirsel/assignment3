@@ -23,7 +23,8 @@ public class TwoStringDecoder implements Decoder {
                 return new Message(code, parameters);
             }
         }
-        decodeNextByte(nextByte);
+        else
+            decodeNextByte(nextByte);
         return null;
     }
 

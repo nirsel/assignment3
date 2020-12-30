@@ -8,14 +8,13 @@ public class NumDecoder implements Decoder {
     byte[] byteArr=new byte[2];
     @Override
     public Message decode(byte nextByte, byte[] bytes, short code) {
-        if (numOfBytes<=1){
-            byteArr[numOfBytes]=nextByte;
-            numOfBytes++;
-        }
-        else{
+        byteArr[numOfBytes]=nextByte;
+        numOfBytes++;
+        if (numOfBytes==2){
             parameter=bytesToShort(byteArr);
             String[] para=new String[1];
             para[0]=String.valueOf(parameter);
+            numOfBytes=0;
             return new Message(code, para);
         }
         return null;
