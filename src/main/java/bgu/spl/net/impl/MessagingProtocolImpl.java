@@ -192,8 +192,6 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
     @Override
     public Message process(Message msg) {
         //shouldTerminate = ("LOGOUT").equals(msg);
-        System.out.println(msg.getOpCode());
-        System.out.println(msg.getParameters()[0]);
         short code=msg.getOpCode();
         Message ans=functionMap.get(code).act(msg.getParameters());
         return ans;
