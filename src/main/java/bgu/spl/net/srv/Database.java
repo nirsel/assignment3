@@ -24,6 +24,7 @@ public class Database {
 	private ConcurrentHashMap<String, User> userMap;
 	private HashMap<Integer, Course> numCourseMap;
 	private static Database singleton=DatabaseHolder.instance;
+	private Object registerLock=new Object();
 	private static class DatabaseHolder{
 		private static Database instance=new Database();
 	}
@@ -79,17 +80,21 @@ public class Database {
 
 
 	public boolean adminRegister(String username, String password){
-		if (isRegistered(username))
-			return false;
-		userMap.put(username,new Admin(username,password));
-		return true;
+		synchronized (registerLock) {
+			if (isRegistered(username))
+				return false;
+			userMap.put(username, new Admin(username, password));
+			return true;
+		}
 	}
 
 	public boolean studentRegister(String username, String password){
-		if (isRegistered(username))
-			return false;
-		userMap.put(username,new Student(username,password));
-		return true;
+		synchronized (registerLock) {
+			if (isRegistered(username))
+				return false;
+			userMap.put(username, new Student(username, password));
+			return true;
+		}
 	}
 
 	public boolean isRegistered(String username){
@@ -102,9 +107,11 @@ public class Database {
 
 	public User login(String username, String password){
 		User user=userMap.get(username);
-		if (user!=null&&!user.getLogged()&user.getPassword().equals(password)) {
-			user.login();
-			return user;
+		synchronized (user) {
+			if (user != null && !user.getLogged() & user.getPassword().equals(password)) {
+				user.login();
+				return user;
+			}
 		}
 		return null;
 	}
@@ -118,15 +125,20 @@ public class Database {
 		if(user==null) {return false;}
 		if(!user.getLogged() | user.isAdmin() | !numCourseMap.containsKey(numCourse)) {return false;}
 		Course course = numCourseMap.get(numCourse);
-		if(course.getNumOfMaxStudents() <= registerMap.get(course).size()){ //check if there is a seat in the course
-			return false;}
-		int [] kdamCourses = course.getKdamCoursesList();
-		List<Integer> listOfCourses = user.getCoursesRegistered();
-		for(int i=0; i<kdamCourses.length; i++){
-			if(!listOfCourses.contains(kdamCourses[i])) {return false;}
+		synchronized (course) {
+			if (course.getNumOfMaxStudents() <= registerMap.get(course).size()) { //check if there is a seat in the course
+				return false;
+			}
+			int[] kdamCourses = course.getKdamCoursesList();
+			List<Integer> listOfCourses = user.getCoursesRegistered();
+			for (int i = 0; i < kdamCourses.length; i++) {
+				if (!listOfCourses.contains(kdamCourses[i])) {
+					return false;
+				}
+			}
+			listOfCourses.add(numCourse);
+			registerMap.get(course).add(user);
 		}
-		listOfCourses.add(numCourse);
-		registerMap.get(course).add(user);
 		return true;
 	}
 	public int[] getKdamCourses(int courseNum){
