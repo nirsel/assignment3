@@ -19,23 +19,25 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
     private TwoStringDecoder twoStringDec=new TwoStringDecoder();
 
     public MessageEncDecImpl() {
+        short c1=1, c2=2, c3=3, c4=4, c5=5, c6=6, c7=7, c8=8, c9=9, c10=10, c11=11;
         decoder=null;
         decodeMap=new HashMap<>();
-        decodeMap.put((short) 1,twoStringDec);
-        decodeMap.put((short) 2,twoStringDec);
-        decodeMap.put((short) 3,twoStringDec);
-        decodeMap.put((short) 4,baseDec);
-        decodeMap.put((short) 5,numDec);
-        decodeMap.put((short) 6,numDec);
-        decodeMap.put((short) 7,numDec);
-        decodeMap.put((short) 8,stringDec);
-        decodeMap.put((short) 9,numDec);
-        decodeMap.put((short) 10,numDec);
-        decodeMap.put((short) 11,baseDec);
+        decodeMap.put(c1,twoStringDec);
+        decodeMap.put(c2,twoStringDec);
+        decodeMap.put(c3,twoStringDec);
+        decodeMap.put(c4,baseDec);
+        decodeMap.put(c5,numDec);
+        decodeMap.put(c6,numDec);
+        decodeMap.put(c7,numDec);
+        decodeMap.put(c8,stringDec);
+        decodeMap.put(c9,numDec);
+        decodeMap.put(c10,numDec);
+        decodeMap.put(c11,baseDec);
     }
 
     @Override
     public Message decodeNextByte(byte nextByte) {
+        System.out.println("starting to decode");
         if (len<=1){
             pushByte(nextByte);
         }
@@ -87,8 +89,9 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
         String[] para=message.getParameters();
         String list="";
         for (int i=0;i<para.length;i++){
-            list=list+para[i]+"\0";
+            list=list+para[i]+' ';
         }
+        list=list.substring(0,list.length()-1)+'\0';
         byte[] array=list.getBytes();
         byte[] combined=new byte[4+array.length];
         for (int i=0;i<combined.length;i++){

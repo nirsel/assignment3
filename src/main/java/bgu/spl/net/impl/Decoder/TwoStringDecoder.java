@@ -25,7 +25,6 @@ public class TwoStringDecoder implements Decoder {
         }
         decodeNextByte(nextByte);
         return null;
-
     }
 
     private void decodeNextByte(byte nextByte){
