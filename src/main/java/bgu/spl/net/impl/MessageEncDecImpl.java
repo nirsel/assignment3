@@ -39,12 +39,15 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
     public Message decodeNextByte(byte nextByte) {
         if (len<=1){
             pushByte(nextByte);
-        }
-        else if (len==2){
-            currentCode=bytesToShort(bytes);
-            decoder=decodeMap.get(currentCode);
-            len++;
-            return decoder.decode(nextByte,bytes,currentCode);
+            if (len==2){
+                currentCode=bytesToShort(bytes);
+                decoder=decodeMap.get(currentCode);
+                if (currentCode==4|currentCode==11) {
+                    len=0;
+                    return new Message(currentCode, new String[0]);
+                }
+            }
+            return null;
         }
         else{
             Message message = decoder.decode(nextByte, bytes,currentCode);
@@ -54,7 +57,6 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
             }
             return message;
         }
-        return null;
     }
 
     private void pushByte(byte nextByte){

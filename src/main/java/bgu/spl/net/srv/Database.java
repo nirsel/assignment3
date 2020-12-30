@@ -170,7 +170,6 @@ public class Database {
 		}
 		java.util.Collections.sort(studentList);
 		return studentList;
-
 	}
 
 	public boolean registeredToCourse(User user, int numCourse){
