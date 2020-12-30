@@ -37,6 +37,7 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
 
     @Override
     public Message decodeNextByte(byte nextByte) {
+        System.out.println("starting to decode");
         if (len<=1){
             pushByte(nextByte);
         }
