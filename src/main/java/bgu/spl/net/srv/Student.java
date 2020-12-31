@@ -23,7 +23,7 @@ public class Student extends User{
 
     @Override
     public void removeFromCourse(int numCourse) {
-        coursesRegistered.remove(numCourse);
+        coursesRegistered.remove(coursesRegistered.indexOf(numCourse));
     }
 
     @Override

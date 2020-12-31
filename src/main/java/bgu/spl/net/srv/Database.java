@@ -186,4 +186,6 @@ public class Database {
 		return true;
 	}
 
+	public User getUser(String username){return userMap.get(username);}
+
 }

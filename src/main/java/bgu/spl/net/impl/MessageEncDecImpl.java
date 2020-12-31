@@ -89,20 +89,24 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
         bytes[2]=paraByte[0];
         bytes[3]=paraByte[1];
         String[] para=message.getParameters();
-        String list="";
-        for (int i=0;i<para.length;i++){
-            list=list+para[i]+' ';
+        String list="\n";
+        for (int i=1;i<para.length;i++){
+            list=list+para[i]+'\n';
         }
-        list=list.substring(0,list.length()-1)+'\0';
-        byte[] array=list.getBytes();
-        byte[] combined=new byte[4+array.length];
-        for (int i=0;i<combined.length;i++){
-            if (i<4)
-                combined[i]=bytes[i];
-            else
-                combined[i]=array[i-4];
+        if (list.length()>1) {
+            list = list.substring(0, list.length() - 1) + '\0';
+            byte[] array = list.getBytes();
+            byte[] combined = new byte[4 + array.length];
+            for (int i = 0; i < combined.length; i++) {
+                if (i < 4)
+                    combined[i] = bytes[i];
+                else
+                    combined[i] = array[i - 4];
+            }
+            return combined;
         }
-        return combined;
+        return bytes;
+
     }
 
     public short bytesToShort(byte[] byteArr)
