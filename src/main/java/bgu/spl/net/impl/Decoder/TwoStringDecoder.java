@@ -11,7 +11,7 @@ public class TwoStringDecoder implements Decoder {
     private int counter=0;
     String[] parameters=new String[2];
     @Override
-    public Message decode(byte nextByte, byte[] bytes, short code) {
+    public Message decode(byte nextByte,  short code) {
         if (nextByte=='\0'){
             if (counter==0){
                 parameters[0]=popString();

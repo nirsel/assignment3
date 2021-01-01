@@ -9,7 +9,7 @@ public class StringDecoder implements Decoder {
     byte[] byteArray=new byte[1<<10];
     private int len=0;
     @Override
-    public Message decode(byte nextByte, byte[] bytes, short code) {
+    public Message decode(byte nextByte, short code) {
         if (nextByte=='\0'){
             String[] para=new String[1];
             para[0]=popString();

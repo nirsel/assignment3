@@ -50,7 +50,7 @@ public class MessageEncDecImpl implements MessageEncoderDecoder<Message> {
             return null;
         }
         else{
-            Message message = decoder.decode(nextByte, bytes,currentCode);
+            Message message = decoder.decode(nextByte, currentCode);
             if (message!=null) {
                 currentCode = 0;
                 len=0;

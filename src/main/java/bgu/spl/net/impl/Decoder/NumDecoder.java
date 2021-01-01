@@ -7,7 +7,7 @@ public class NumDecoder implements Decoder {
     int numOfBytes=0;
     byte[] byteArr=new byte[2];
     @Override
-    public Message decode(byte nextByte, byte[] bytes, short code) {
+    public Message decode(byte nextByte, short code) {
         byteArr[numOfBytes]=nextByte;
         numOfBytes++;
         if (numOfBytes==2){
