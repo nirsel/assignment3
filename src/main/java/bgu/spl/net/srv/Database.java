@@ -125,6 +125,8 @@ public class Database {
 		if(user==null) {return false;}
 		if(!user.getLogged() | user.isAdmin() | !numCourseMap.containsKey(numCourse)) {return false;}
 		Course course = numCourseMap.get(numCourse);
+		if (user.getCoursesRegistered().contains(numCourse))
+			return false;
 		synchronized (course) {
 			if (course.getNumOfMaxStudents() <= registerMap.get(course).size()) { //check if there is a seat in the course
 				return false;
@@ -182,7 +184,10 @@ public class Database {
 		if (!registeredToCourse(user,numCourse))
 			return false;
 		user.removeFromCourse(numCourse);
-		registerMap.get(numCourseMap.get(numCourse)).remove(user);
+		Course course=numCourseMap.get(numCourse);
+		synchronized (course) {
+			registerMap.get(course).remove(user);
+		}
 		return true;
 	}
 

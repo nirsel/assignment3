@@ -120,7 +120,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
             courseList.sort(Comparator.comparingInt(a->a.getSerialNum()));
             String[] para=new String[2];
             para[0]=String.valueOf(c8);
-            String list="[";
+            String list="Student: "+parameters[0]+'\n'+"Courses: [";
             if (courseList.size()>0) {
                 for (Course course : courseList) {
                     list = list + course.getCourseNum() + ",";
@@ -130,7 +130,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
                 para[1]=list;
             }
             else
-                para[1]="[]";
+                para[1]="Student: "+parameters[0]+'\n'+"Courses: []";
             return getAck(para);
         });
 
