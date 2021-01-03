@@ -2,6 +2,10 @@ package bgu.spl.net.api;
 
 import bgu.spl.net.impl.Message;
 
+/**
+ * interface that represents a a required function in order to response to each message.
+ * the function receives the parameters of the input message and creates the right response message.
+ */
 public interface Function {
-    public Message act(String[] parameters);
+    Message act(String[] parameters);
 }

@@ -3,10 +3,17 @@ package bgu.spl.net.impl.Decoder;
 import bgu.spl.net.impl.Message;
 
 public class NumDecoder implements Decoder {
+    /**
+     * decoder that handles message which holds a short number parameter besides the opCode.
+     */
     short parameter;
     int numOfBytes=0;
     byte[] byteArr=new byte[2];
     @Override
+    /**
+     * receives the next byte to decode and the opCode of the input message
+     * returns the complete decoded message if decoding is complete, null otherwise.
+     */
     public Message decode(byte nextByte, short code) {
         byteArr[numOfBytes]=nextByte;
         numOfBytes++;

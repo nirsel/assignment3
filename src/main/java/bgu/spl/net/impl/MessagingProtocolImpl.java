@@ -76,7 +76,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
                 return getAck(para); // ack msg
             }
             for(int i=0;i<array.length-1;i++){
-                kdamCourses+= String.valueOf(array[i])+",";
+                kdamCourses+= array[i] +",";
             }
             kdamCourses+= array[array.length - 1] +"]";
             para[1]=kdamCourses;

@@ -101,10 +101,6 @@ public class Database {
 		return userMap.containsKey(username);
 	}
 
-	public boolean isLogged(User user){
-		return user.getLogged();
-	}
-
 	public User login(String username, String password){
 		User user=userMap.get(username);
 		synchronized (user) {
