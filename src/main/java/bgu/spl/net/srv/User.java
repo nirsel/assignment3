@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class User {
+    /**
+     * abstract class to represnet a user (admin or student) registered to the database.
+     */
     private final String username;
     private final String password;
 

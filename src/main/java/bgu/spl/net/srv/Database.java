@@ -58,7 +58,7 @@ public class Database {
 				String courseName=lineArray[1];
 				int[] array;
 				if (!lineArray[2].equals("[]")) {
-					array = Stream.of(lineArray[2].substring(1, lineArray[2].length() - 1).split(",")).mapToInt(Integer::parseInt).toArray();
+					 array = Stream.of(lineArray[2].substring(1, lineArray[2].length() - 1).split(",")).mapToInt(Integer::parseInt).toArray();
 				}
 				else{
 					 array=new int[0];
@@ -101,10 +101,6 @@ public class Database {
 		return userMap.containsKey(username);
 	}
 
-	public boolean isLogged(User user){
-		return user.getLogged();
-	}
-
 	public User login(String username, String password){
 		User user=userMap.get(username);
 		synchronized (user) {
@@ -125,6 +121,8 @@ public class Database {
 		if(user==null) {return false;}
 		if(!user.getLogged() | user.isAdmin() | !numCourseMap.containsKey(numCourse)) {return false;}
 		Course course = numCourseMap.get(numCourse);
+		if (user.getCoursesRegistered().contains(numCourse))
+			return false;
 		synchronized (course) {
 			if (course.getNumOfMaxStudents() <= registerMap.get(course).size()) { //check if there is a seat in the course
 				return false;
@@ -170,7 +168,6 @@ public class Database {
 		}
 		java.util.Collections.sort(studentList);
 		return studentList;
-
 	}
 
 	public boolean registeredToCourse(User user, int numCourse){
@@ -183,15 +180,13 @@ public class Database {
 		if (!registeredToCourse(user,numCourse))
 			return false;
 		user.removeFromCourse(numCourse);
-		registerMap.get(numCourseMap.get(numCourse)).remove(user);
+		Course course=numCourseMap.get(numCourse);
+		synchronized (course) {
+			registerMap.get(course).remove(user);
+		}
 		return true;
 	}
 
-	public static void main(String [] args){
-		Database d = Database.getInstance();
-		boolean ans= d.initialize("src/main/java/bgu/spl/net/srv/Courses.txt");
-
-	}
-
+	public User getUser(String username){return userMap.get(username);}
 
 }
