@@ -175,7 +175,7 @@ public class Database {
 	}
 	/**
 	 * Retrieves the list of kdam courses associated with a specific course.
-	 * @param numCourse- the course number of the course.
+	 * @param courseNum- the course number of the course.
 	 * @return the list of kdam courses.
 	 */
 	public int[] getKdamCourses(int courseNum){
@@ -194,13 +194,21 @@ public class Database {
 			return null;
 		return numCourseMap.get(numCourse);
 	}
-
+	/**
+	 * Retrieves the number of students registered to the course.
+	 * @param courseNum- the course number of the course.
+	 * @return the number of students registered or -1 if the course doesn't exist.
+	 */
 	public int numOfStudentesRegistered(int courseNum){
 		if (!numCourseMap.containsKey(courseNum))
 			return -1;
 		return registerMap.get(numCourseMap.get(courseNum)).size();
 	}
-
+	/**
+	 * Retrieves the list of students registered to the course sorted alphabetically.
+	 * @param courseNum- the course number of the course.
+	 * @return the list of students registered.
+	 */
 	public List<String> studentList(int courseNum){
 		if (!numCourseMap.containsKey(courseNum))
 			return null;
@@ -212,13 +220,23 @@ public class Database {
 		java.util.Collections.sort(studentList);
 		return studentList;
 	}
-
+	/**
+	 * checks if the user is registered to this course.
+	 * @param numCourse- the course number of the course.
+	 * @param user- the use to register.
+	 * @return true if the user is registered to the course. false otherwise.
+	 */
 	public boolean registeredToCourse(User user, int numCourse){
 		if (!numCourseMap.containsKey(numCourse)|user.isAdmin())
 			return false;
 		return registerMap.get(numCourseMap.get(numCourse)).contains(user);
 	}
-
+	/**
+	 * Unregister a user from a course.
+	 * @param user- the use to unregister.
+	 * @param numCourse- the course number of the course.
+	 * @return true if unregistering was successful. false otherwise.
+	 */
 	public boolean unregisterFromCourse(User user,int numCourse){
 		if (!registeredToCourse(user,numCourse))
 			return false;
@@ -229,7 +247,11 @@ public class Database {
 		}
 		return true;
 	}
-
+	/**
+	 * retrieves a user given his username.
+	 * @param username- the username of the user.
+	 * @return the user.
+	 */
 	public User getUser(String username){return userMap.get(username);}
 
 }
