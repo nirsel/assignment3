@@ -78,7 +78,12 @@ public class Database {
 		return false;
 	}
 
-
+	/**
+	 * Register a new admin to the system
+	 * @param username- the admin's username
+	 * @param password- the admin's password
+	 * @return true if registration was successful. false otherwise.
+	 */
 	public boolean adminRegister(String username, String password){
 		synchronized (registerLock) {
 			if (isRegistered(username))
@@ -87,6 +92,12 @@ public class Database {
 			return true;
 		}
 	}
+	/**
+	 * Register a new student to the system
+	 * @param username- the student's username
+	 * @param password- the student's password
+	 * @return true if registration was successful. false otherwise.
+	 */
 
 	public boolean studentRegister(String username, String password){
 		synchronized (registerLock) {
