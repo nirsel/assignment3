@@ -93,7 +93,7 @@ public class Database {
 		}
 	}
 	/**
-	 * Register a new student to the system
+	 * Register a new student to the system. This method is synchronized to avoid 2 clients trying to register under the same user.
 	 * @param username- the student's username
 	 * @param password- the student's password
 	 * @return true if registration was successful. false otherwise.
@@ -107,11 +107,22 @@ public class Database {
 			return true;
 		}
 	}
+	/**
+	 * checks if the user is registered.
+	 * @param username- the user's username
+	 * @return true if the user is registered. false otherwise.
+	 */
 
 	public boolean isRegistered(String username){
 		return userMap.containsKey(username);
 	}
-
+	
+	/**
+	 * login the user. This method is synchronized (on user) to avoid two clients trying to login under the same user.
+	 * @param username- the user's username
+	 * @param password- the user's password
+	 * @return user- user that logged in
+	 */
 	public User login(String username, String password){
 		User user=userMap.get(username);
 		synchronized (user) {
@@ -122,12 +133,24 @@ public class Database {
 		}
 		return null;
 	}
+	/**
+	 * logout the user.
+	 * @param user- the user whom we want to logout.
+	 * @return true if logout was successful. false otherwise.
+	 */
 	public boolean logOut(User user){
 		if (user==null||!user.getLogged())
 			return false;
 		user.unlog();
 		return true;
 	}
+	/**
+	 * Register the user to the course. 
+	 * This method is partly synchronized (on course) to avoid 2 clients tring to register to this course while number of seats is limited.
+	 * @param user- the user to register
+	 * @param numCourse- the course number of the course which the user wants to register to.
+	 * @return true if registration was successful. false otherwise.
+	 */
 	public boolean registerCourse(User user, int numCourse){
 		if(user==null) {return false;}
 		if(!user.getLogged() | user.isAdmin() | !numCourseMap.containsKey(numCourse)) {return false;}
@@ -150,13 +173,22 @@ public class Database {
 		}
 		return true;
 	}
+	/**
+	 * Retrieves the list of kdam courses associated with a specific course.
+	 * @param numCourse- the course number of the course.
+	 * @return the list of kdam courses.
+	 */
 	public int[] getKdamCourses(int courseNum){
 		if(numCourseMap.containsKey(courseNum)){
 			return numCourseMap.get(courseNum).getKdamCoursesList();
 		}
 		return null;
 	}
-
+	 /**
+	 * Retrieves the course associated with a course number.
+	 * @param numCourse- the course number of the course.
+	 * @return the course.
+	 */
 	public Course getCourse(int numCourse){
 		if (!numCourseMap.containsKey(numCourse))
 			return null;
