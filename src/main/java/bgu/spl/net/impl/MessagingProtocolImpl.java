@@ -6,10 +6,7 @@ import bgu.spl.net.srv.Course;
 import bgu.spl.net.srv.Database;
 import bgu.spl.net.srv.User;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class MessagingProtocolImpl implements MessagingProtocol<Message> {
     private boolean shouldTerminate=false;
@@ -84,8 +81,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         });
         functionMap.put(c7, (parameters)->{ // course status
             int courseNum=Integer.parseInt(parameters[0]);
-            int[] kdam=database.getKdamCourses(courseNum); // ger list of kdam courses
-            if (user==null||!user.isAdmin()|kdam==null)
+            if (user==null||!user.isAdmin())
                 return getError(c7); //error msg
             String[] para=new String[4];
             para[0]=String.valueOf(c7); // get the opCode

@@ -5,9 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -179,10 +177,20 @@ public class Database {
 	 * @return the list of kdam courses.
 	 */
 	public int[] getKdamCourses(int courseNum){
-		if(numCourseMap.containsKey(courseNum)){
-			return numCourseMap.get(courseNum).getKdamCoursesList();
+		if(!numCourseMap.containsKey(courseNum)){
+			return null;
 		}
-		return null;
+		int[] array=numCourseMap.get(courseNum).getKdamCoursesList();
+		List<Course> courseList=new LinkedList<>();
+		for (int i=0;i<array.length;i++)
+			courseList.add(numCourseMap.get(array[i]));
+		courseList.sort(Comparator.comparingInt((a)->a.getSerialNum()));
+		int i=0;
+		for (Course c:courseList){
+			array[i]=c.getCourseNum();
+			i++;
+		}
+		return array;
 	}
 	 /**
 	 * Retrieves the course associated with a course number.
