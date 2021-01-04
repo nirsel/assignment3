@@ -199,7 +199,7 @@ public class Database {
 	 * @param courseNum- the course number of the course.
 	 * @return the number of students registered or -1 if the course doesn't exist.
 	 */
-	public int numOfStudentesRegistered(int courseNum){
+	public int numOfStudentsRegistered(int courseNum){
 		if (!numCourseMap.containsKey(courseNum))
 			return -1;
 		return registerMap.get(numCourseMap.get(courseNum)).size();

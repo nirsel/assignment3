@@ -92,7 +92,7 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
             Course course=database.getCourse(courseNum);
             para[1]="Course: ("+courseNum+") "+course.getCourseName();
             int numOfMax=course.getNumOfMaxStudents();
-            para[2]="Seats Available: "+(numOfMax-database.numOfStudentesRegistered(courseNum))+"/"+numOfMax;
+            para[2]="Seats Available: "+(numOfMax-database.numOfStudentsRegistered(courseNum))+"/"+numOfMax;
             List<String> studentList=database.studentList(courseNum);
             if (studentList.size()==0)
                 para[3]="Students Registered: []";
