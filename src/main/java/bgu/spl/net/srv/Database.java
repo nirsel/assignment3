@@ -223,7 +223,7 @@ public class Database {
 	/**
 	 * checks if the user is registered to this course.
 	 * @param numCourse- the course number of the course.
-	 * @param user- the use to register.
+	 * @param user- the useR to register.
 	 * @return true if the user is registered to the course. false otherwise.
 	 */
 	public boolean registeredToCourse(User user, int numCourse){

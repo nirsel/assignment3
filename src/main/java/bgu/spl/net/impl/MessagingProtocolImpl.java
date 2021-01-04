@@ -135,9 +135,9 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         });
 
         functionMap.put(c9,(parameters)->{ //check if registered
-            if (user==null||user.isAdmin())
-                return getError(c9); // error msg
             int courseNum=Integer.parseInt(parameters[0]);
+            if (user==null||user.isAdmin()|database.getCourse(courseNum)==null)
+                return getError(c9); // error msg
             boolean ans = database.registeredToCourse(user,courseNum); // checks if a user is registered to a course through the database
             String[] para=new String[2];
             para[0]=String.valueOf(c9); // get the opCode
