@@ -13,7 +13,7 @@ import java.io.IOException;
 public class TPCMain {
 
     public static void main(String[] args){
-        try(TPCServer<Message> server=new TPCServer<Message>(7777,()-> new MessagingProtocolImpl(), ()-> new MessageEncDecImpl());)
+        try(TPCServer<Message> server=new TPCServer<Message>(Integer.parseInt(args[0]),()-> new MessagingProtocolImpl(), ()-> new MessageEncDecImpl());)
         {
             server.serve();
         }
