@@ -81,11 +81,11 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         });
         functionMap.put(c7, (parameters)->{ // course status
             int courseNum=Integer.parseInt(parameters[0]);
-            if (user==null||!user.isAdmin())
+            Course course=database.getCourse(courseNum);
+            if (user==null||!user.isAdmin()|course==null)
                 return getError(c7); //error msg
             String[] para=new String[4];
             para[0]=String.valueOf(c7); // get the opCode
-            Course course=database.getCourse(courseNum); // retrieve the course
             para[1]="Course: ("+courseNum+") "+course.getCourseName();
             int numOfMax=course.getNumOfMaxStudents(); // get the capacity of the course
             para[2]="Seats Available: "+(numOfMax-database.numOfStudentsRegistered(courseNum))+"/"+numOfMax; // calculates the num of available seats
@@ -107,8 +107,10 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
         functionMap.put(c8,(parameters)->{ // student status
             if (user==null||!user.isAdmin()|!database.isRegistered(parameters[0]))
                 return getError(c8); // error msg
-
-            List<Integer> numCourseList=database.getUser(parameters[0]).getCoursesRegistered(); // get the list of courseNumbers the user is register to.
+            User user=database.getUser(parameters[0]);
+            if (user.isAdmin())
+                return getError(c8);
+            List<Integer> numCourseList=user.getCoursesRegistered(); // get the list of courseNumbers the user is register to.
             List<Course> courseList=new LinkedList<Course>();
             for (Integer num:numCourseList){
                 courseList.add(database.getCourse(num)); // get the course associated with a course num
