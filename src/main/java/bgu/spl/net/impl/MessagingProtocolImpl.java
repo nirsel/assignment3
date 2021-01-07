@@ -62,6 +62,8 @@ public class MessagingProtocolImpl implements MessagingProtocol<Message> {
             return getError(c5); // error message
         });
         functionMap.put(c6, (parameters)->{ // check kdam courses
+            if (user==null||user.isAdmin())
+                return getError(c6);
             int[] array = database.getKdamCourses(Integer.parseInt(parameters[0])); //get the list of kdam courses through database
             if(array==null)
                 return getError(c6); // error msg
